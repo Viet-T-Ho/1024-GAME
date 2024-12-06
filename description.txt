@@ -1,0 +1,32 @@
+Project: 1024 Game with Board Class  
+Oct, 2024 
+Computer Science Student, UIC
+  
+- Developed an object-oriented version of the 1024/2048-like game in C++ 
+  by creating a Board class to handle all aspects of the game state, 
+  including tile movement, combining, and random number generation.
+  
+- Engineered the Board class with methods to initialize the board, 
+  display the grid, process player input, and manage tile shifts and combinations.
+    
+- Implemented different levels of difficulty (Easy, Medium, Hard), 
+  where each difficulty has distinct random number generation probabilities 
+  (50% for 2, 30% for 4 in Easy; 70% for 2, 30% for 4 in Medium).
+    
+- Designed a robust game loop that alternates between displaying the board, 
+  accepting user input, and updating the game state with tile movements.
+
+- Created an efficient system for determining valid moves and combinations by analyzing rows and columns, 
+  ensuring that tiles only combine once per move and in the correct order.
+
+- Utilized advanced C++ features such as dynamic memory allocation and class inheritance 
+  to optimize the program and facilitate modular development.
+
+- Tested the game for edge cases, such as handling full boards with no valid moves 
+  and ensuring correct behavior during tile shifting and combining.
+    
+- Presented the final game with an emphasis on the use of object-oriented programming principles, 
+  demonstrating my ability to structure complex systems and maintain code flexibility.
+    
+- Technical Skills: C++, Object-Oriented Programming, Board Class Design, Algorithm Optimization, 
+  Dynamic Memory Allocation, Random Number Generation
