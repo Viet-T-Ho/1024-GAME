@@ -1,0 +1,220 @@
+/** Overview
+
+For this project, we'll be creating a game like 1024 or 2048. 
+This is a math game that is played on a 4-by-4 grid, with numbers that are powers of 2 (1, 2, 4, 8, 16, and so on). 
+Matching numbers can be combined: so a 2 and a 2 can be combined to become a 4; a 4 and a 4 can be combined to become 8; 8 and 8 can become 16 and so on. 
+The goal of either of those games (1024 or 2048) is to combine the pieces to get that number.
+
+Our game will be different from those games, but it follows the same basic idea, which you can play here: https://1024game.org/
+
+Figure 26.5.1: Original 1024 Game
+
+Differences Between Our Game and Original 1024
+
+Our game will be a little different from the regular 1024. 
+We won't use 1s, so the smallest numbers will be 2s and then 4s, and we will simplify the sliding action: when sliding, numbers will move at most one square.
+We will also have easy, medium, and hard levels to make the game easier for beginners to play.
+
+The sliding and game modes are discussed in the Sliding and Gameplay sections.
+
+** Displaying the Board
+
+The board should be displayed using a grid created out of dashes and vertical pipes. 
+Each spot for a number is 4 characters wide, to give space for numbers up to 1024. 
+There should either be nothing (just spaces) for an empty square, or the appropriate number, right aligned. 
+After the board, display a prompt for user input:
+
+---------------------
+|   4|    |   8|    |
+---------------------
+|    |    |   4|    |
+---------------------
+|    |   2|   8|    |
+---------------------
+|    |   2|    |    |
+---------------------
+Enter move: U, D, L, or R. Q to quit:
+
+
+** Gameplay
+
+The program should start by asking the user to enter a random seed and then choose their mode: Easy (E), Medium (M), or Hard (H). 
+Details of those modes are in the Modes section. Start the game by adding two numbers to a blank board randomly. 
+
+Each turn starts with displaying the board to the user. 
+The user can choose whether to move up (U), down (D), left (L), or right (R). 
+They may also enter Q to quit. If the user enters quit, the program should immediately exit. 
+If the user enters invalid input, display an error message and display the prompt (but not the board) again.
+
+If the user chooses a direction, move the pieces in the appropriate direction. 
+After those moves have been made, add a new number onto the board randomly. 
+Then the user takes another turn until they win or lose, or quit the game.
+
+All input in the program should be case-insensitive. For example, the user may enter d or D to make a move down.
+
+
+Enter random seed: 1
+Choose game mode: Easy (E), Medium (M), or Hard (H): q
+Error: Invalid mode.
+Choose game mode: Easy (E), Medium (M), or Hard (H): e
+
+---------------------
+|    |    |    |    |
+---------------------
+|    |   4|    |    |
+---------------------
+|    |    |   4|    |
+---------------------
+|    |    |    |    |
+---------------------
+Enter move: U, D, L, or R. Q to quit: e
+
+Error: Invalid move.
+Enter move: U, D, L, or R. Q to quit: u
+
+---------------------
+|    |   4|    |    |
+---------------------
+|   2|    |   4|    |
+---------------------
+|    |    |    |    |
+---------------------
+|    |    |    |    |
+---------------------
+Enter move: U, D, L, or R. Q to quit: q
+
+Winning and Losing
+
+The user wins if there is a square with the target on the board. 
+The target for easy games is 256, for medium games it is 512, and for hard games it is 1024. 
+If the player wins, display the final board (so the user can see the target on the board) 
+and then the message "You win!" and exit the game.
+
+---------------------
+|    |   4|  16| 128|
+---------------------
+|   2|   4|   2| 128|
+---------------------
+|    |    |    |   8|
+---------------------
+|    |    |   4|   2|
+---------------------
+Enter move: U, D, L, or R. Q to quit: u
+
+
+---------------------
+|   2|   8|  16| 256|
+---------------------
+|   4|    |   2|   8|
+---------------------
+|    |    |   4|   2|
+---------------------
+|    |    |    |    |
+---------------------
+You win!
+
+
+The player loses if they don't win and the board is full. Display the final board and the message "You lose."
+
+---------------------
+|   2|  16|   8|  16|
+---------------------
+|   8|   8|   4|   4|
+---------------------
+|   4|   4|   2|   2|
+---------------------
+|   2|   2|   4|    |
+---------------------
+Enter move: U, D, L, or R. Q to quit: u
+
+
+---------------------
+|   2|  16|   8|  16|
+---------------------
+|   8|   8|   4|   4|
+---------------------
+|   4|   4|   2|   2|
+---------------------
+|   2|   2|   4|   4|
+---------------------
+You lose.
+
+
+** Adding Random Numbers
+
+To add a random number, we need to first choose which square the random number is being assigned to, 
+and then choose the number itself.
+
+We only add a random number to an open square, so if there are 6 open squares, 
+you would choose a random number 1 to 6 to put the new number into. 
+If the random number generator choses 3, for example, we'd find the 3rd open square and put the new number in that. 
+Count starting in the top row and going across left-to-right, then in the second row, and so on. 
+The board below shows the order that squares would be counted, 
+with Xs showing the occupied squares (the ones that already have numbers).
+
+---------------------
+| 1  |   X|   X|   X|
+---------------------
+|   X|   X|   X|   X|
+---------------------
+| 2  | 3  | 4  |   X|
+---------------------
+| 5  | 6  |   X|   X|
+---------------------
+
+
+Next, we should choose what random number goes in that spot.
+This will be either a 2 or a 4. In the easy level, it will be 2 half the time and 4 half the time, 
+in the medium level a 2 will be selected 70% of the time, and in the hard level a 2 will be selected 90% of the time. 
+To do this, choose a random number between 1 and 10. If that number is 5 or less in the easy level you should place a 2 on the board. 
+For the medium level, use a 7 or less or, for the hard level, use 9 or less. If it's not a 2, you should place a 4.
+
+The code template includes code for the Mersenne-Twister, and the main function gets the random seed as input and calls the seed function. 
+The chooseRandomNumber(min, max) function is again provided but has been put into the Mersenne Twister code (which has been split into a .h file and a .cpp file) 
+so that you can call chooseRandomNumber from any file, even if you are putting a Board class in a separate file.
+
+** Sliding
+
+For sliding pieces, different numbers should move one space in the direction they are sliding if there is space available. 
+For example, if sliding this row left:
+
+|   2|    |   8|   4|
+The 2 cannot move left further, but the 8 and the 4 would both move one space left:
+
+|   2|   8|   4|    |
+
+
+If there is a pair of two of the same number, one slides to join the other (which doesn't move).
+So, for the following row to slide left:
+
+|    |   2|   2|   4|
+The two 2s combine to become 4, in the location of the 2 on the left. 
+The 4 that was already there slides one spot left since that space is now available:
+
+|    |   4|   4|    |
+
+
+If there are three of the same pieces in a row, the two furthest in the sliding direction should combine. 
+So, if this row slides right:
+
+|   2|   2|   2|    |
+The right-most 2s will combine to become a 4, and the other 2 will move right:
+
+|    |   2|   4|    |
+(If there are four of the same pieces in a row, both pairs will be combined.)
+
+
+
+To implement the shift, I recommend going through each row (or column if the move is vertical), 
+and first looking to find if there are any numbers to combine. 
+Once all the numbers are combined, shift them the appropriate direction. 
+It's probably easiest to write this for one direction first--for example, 
+left--and test it out to find any bugs, and then make variations of the function to go right, and then up and down.
+
+** Getting Started
+
+I recommend creating a Board class to keep track of the board and the current state of the game, 
+and lets you easily create functions that interact with the board (like adding a random piece, shifting, etc).
+
+To keep track of the game board, use a two-dimensional array. You can use a 0 to indicate that the space is empty, 
+or a 2, 4, 8, or so on to keep track of what number is at that spot.
